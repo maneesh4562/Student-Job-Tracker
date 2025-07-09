@@ -1,0 +1,44 @@
+{
+  "name": "ai-resume-analyzer",
+  "version": "1.0.0",
+  "description": "AI Resume Analyzer and Job Matcher - Full Stack Application",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\" \"npm run dev:nlp\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "dev:nlp": "cd nlp-service && python main.py",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "cd client && npm run build",
+    "build:server": "cd server && npm run build",
+    "start": "cd server && npm start",
+    "start:prod": "cd server && NODE_ENV=production npm start",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install && cd ../nlp-service && pip install -r requirements.txt",
+    "setup:prod": "npm run install:all && npm run build",
+    "deploy:check": "npm run lint && npm run test",
+    "lint": "cd client && npm run lint",
+    "test": "echo \"Tests not implemented yet\"",
+    "clean": "rm -rf client/dist server/dist logs/*.log",
+    "logs": "tail -f logs/*.log"
+  },
+  "keywords": [
+    "resume",
+    "ai",
+    "ats",
+    "job-matching",
+    "nlp",
+    "mern",
+    "react",
+    "nodejs",
+    "python"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+} 

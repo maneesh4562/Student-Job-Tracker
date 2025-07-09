@@ -1,0 +1,11 @@
+
+> ai-resume-analyzer-server@1.0.0 start
+> node src/index.js
+
+(node:31209) [MONGODB DRIVER] Warning: useNewUrlParser is a deprecated option: useNewUrlParser has no effect since Node.js Driver version 4.0.0 and will be removed in the next major version
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31209) [MONGODB DRIVER] Warning: useUnifiedTopology is a deprecated option: useUnifiedTopology has no effect since Node.js Driver version 4.0.0 and will be removed in the next major version
+📦 MongoDB Connected: localhost
+🚀 Server running on port 5001
+📊 Health check: http://localhost:5001/api/health
+::1 - - [05/Jul/2025:17:08:10 +0000] "GET /api/health HTTP/1.1" 200 100 "-" "curl/8.7.1"

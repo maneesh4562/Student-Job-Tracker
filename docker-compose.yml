@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:6.0
+    container_name: ai-resume-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: ai-resume-analyzer
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - ai-resume-network
+
+  # Backend API Server
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-resume-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 5001
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/ai-resume-analyzer?authSource=admin
+      JWT_SECRET: your-super-secure-jwt-secret-key-for-production
+      JWT_EXPIRE: 7d
+      CORS_ORIGIN: http://localhost:3000
+      MAX_FILE_SIZE: 5242880
+      UPLOAD_PATH: ./uploads
+      NLP_SERVICE_URL: http://nlp-service:8000
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./server/uploads:/app/uploads
+      - ./logs:/app/logs
+    depends_on:
+      - mongodb
+      - nlp-service
+    networks:
+      - ai-resume-network
+
+  # NLP Service
+  nlp-service:
+    build:
+      context: ./nlp-service
+      dockerfile: Dockerfile
+    container_name: ai-resume-nlp
+    restart: unless-stopped
+    environment:
+      PORT: 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./nlp-service:/app
+    networks:
+      - ai-resume-network
+
+  # Frontend Client
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: ai-resume-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - ai-resume-network
+
+  # Nginx Reverse Proxy (Optional)
+  nginx:
+    image: nginx:alpine
+    container_name: ai-resume-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-proxy.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - ai-resume-network
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  ai-resume-network:
+    driver: bridge 
