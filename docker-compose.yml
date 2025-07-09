@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # MongoDB Database
   mongodb:
@@ -28,7 +26,7 @@ services:
     environment:
       NODE_ENV: production
       PORT: 5001
-      MONGODB_URI: mongodb+srv://maneeshbugaliya:FpTkL2vB5o7mEyVn@cluster0.b82dujf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      MONGODB_URI: ${MONGODB_URI}
       JWT_SECRET: your-super-secure-jwt-secret-key-for-production
       JWT_EXPIRE: 7d
       CORS_ORIGIN: http://localhost:3000
