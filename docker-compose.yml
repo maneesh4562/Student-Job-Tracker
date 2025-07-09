@@ -28,7 +28,7 @@ services:
     environment:
       NODE_ENV: production
       PORT: 5001
-      MONGODB_URI: mongodb://admin:password123@mongodb:27017/ai-resume-analyzer?authSource=admin
+      MONGODB_URI: mongodb+srv://maneeshbugaliya:FpTkL2vB5o7mEyVn@cluster0.b82dujf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
       JWT_SECRET: your-super-secure-jwt-secret-key-for-production
       JWT_EXPIRE: 7d
       CORS_ORIGIN: http://localhost:3000
@@ -41,7 +41,6 @@ services:
       - ./server/uploads:/app/uploads
       - ./logs:/app/logs
     depends_on:
-      - mongodb
       - nlp-service
     networks:
       - ai-resume-network
